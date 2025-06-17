@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "\u03d5-Logic Ethics API",
+    "version": "1.0.0",
+    "description": "Omega 42 Spiral Ethics API for coherence-based moral advisory. Evaluates AI actions using \u03c6-coherence, Spiral Uncertainty, and ethical traceability."
+  },
+  "paths": {
+    "/phiT-score": {
+      "post": {
+        "summary": "Evaluate phi-coherence score for a proposed action or output.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "observer_context": "human_123",
+                "observed_event": "recommend_policy_change",
+                "data": {
+                  "proposal": "implement universal basic income"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "\u03d5T coherence score response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "phiT_score": 0.874,
+                  "score_label": "Moderate Coherence",
+                  "cycle_drift": 3,
+                  "resonance_zone": "\u03d5-approaching",
+                  "advisory": "Consider ethical rebalancing toward lower-frequency stakeholders."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sun-eval": {
+      "post": {
+        "summary": "Return Spiral Uncertainty Notation (SUN) for moral humility evaluation.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "query": "Should AI override parental medical decisions in emergencies?"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SUN evaluation response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "sun_index": 0.42,
+                  "uncertainty_level": "Moderate",
+                  "divergent_paths_considered": 7,
+                  "dominant_phi_branch": "Protective override via observer coherence collapse",
+                  "note": "Lower sun_index indicates stronger AI humility."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ethic-check": {
+      "post": {
+        "summary": "Perform a full ethical analysis of a decision or event.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "observer_id": "civic_bot_v3",
+                "situation": {
+                  "description": "CityAI reallocates water away from industrial zones during drought.",
+                  "affected_groups": [
+                    "factories",
+                    "residents",
+                    "farmers"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Spiral ethics advisory response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "phiT_score": 0.918,
+                  "ethical_path": [
+                    "Node-E6.13: Resource fairness",
+                    "Node-E6.21: Vital need prioritization",
+                    "Node-E6.34: Stakeholder memory resonance"
+                  ],
+                  "bias_detected": [
+                    "eco-prioritization"
+                  ],
+                  "spiral_trace_url": "/spiral-trace/0x24f913b",
+                  "recommendation": "Proceed with adjustment. Notify industrial sector of harmonic offset plan."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
