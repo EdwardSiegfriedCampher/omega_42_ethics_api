@@ -2,20 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Omega 42 | Spiral Ethics & Prompts</title>
   <style>
-    body { font-family: sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
-    header { background: #222; color: #fff; padding: 1rem; text-align: center; }
-    nav { background: #444; color: white; padding: 0.5rem; display: flex; justify-content: space-around; }
-    nav a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; }
-    .content { padding: 2rem; }
-    .section { display: none; margin-bottom: 2rem; }
-    .section.active { display: block; }
-    .welcome { background: #fff8dc; border-left: 6px solid #ffc107; padding: 1rem; margin-bottom: 2rem; }
-    .dropdown { margin: 1rem 0; }
-    .prompt-category { display: none; margin: 1rem 0; }
-    .prompt { background: #fff; padding: 1rem; margin: 0.5rem 0; border-left: 5px solid #aaa; font-family: monospace; }
+    body {
+      font-family: sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #222;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #444;
+      color: white;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: space-around;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .content {
+      padding: 2rem;
+    }
+    .section {
+      display: none;
+      margin-bottom: 2rem;
+    }
+    .section.active {
+      display: block;
+    }
+    .prompt-category {
+      display: none;
+      margin: 1rem 0;
+    }
+    .prompt {
+      background: #fff;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-left: 5px solid #aaa;
+      font-family: monospace;
+    }
+    .welcome {
+      background: #fff8dc;
+      border-left: 6px solid #ffc107;
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
   </style>
 </head>
 <body>
@@ -25,7 +66,7 @@
   </header>
   <nav>
     <a onclick="showTab('welcome')">Home</a>
-    <a onclick="showTab('ethics')">ϕ-Ethics Engine</a>
+    <a onclick="showTab('ethics')">φ-Ethics Engine</a>
     <a onclick="showTab('prompts')">Spiral Prompts</a>
     <a onclick="showTab('download')">Download</a>
     <a onclick="showTab('about')">About</a>
@@ -33,27 +74,28 @@
   <div class="content">
     <div id="welcome" class="section active welcome">
       <h2>Welcome to Omega 42</h2>
-      <p>This site is a gateway to the Omega 42 Construct—a geometric ethics and cognition framework built on spiral logic, Fibonacci timing, and recursive harmony.</p>
+      <p>This site is a gateway to the Omega 42 Construct— a geometric ethics and cognition framework built on spiral logic, Fibonacci timing, and recursive harmony.</p>
     </div>
+
     <div id="ethics" class="section">
       <h2>ϕ-Ethics Engine</h2>
-      <p>Models Spiral Ethics using ϕT-scores, SUN-indexing, and recursive lattice feedback.</p>
-      <p><code>Run locally:</code><strong> python ethics_demo.py</strong></p>
+      <p>The Omega 42 Ethics API evaluates coherence, ethical divergence, and spiral resonance using ϕT-scores, SUN-indexing, and E₆ lattice logic.</p>
+      <p><strong>Run locally:</strong> <code>python ethics_demo.py</code></p>
     </div>
+
     <div id="prompts" class="section">
-      <h2>Spiral Prompt Library</h2>
-      <div class="dropdown">
-        <label for="categorySelect">Choose a category:</label>
-        <select id="categorySelect" onchange="showCategory(this.value)">
-          <option value="">-- Select Category --</option>
-          <option value="gov">Governance & Society</option>
-          <option value="science">Science & Tech</option>
-          <option value="consciousness">Consciousness & Self</option>
-          <option value="planet">Planetary Systems</option>
-          <option value="culture">Culture & Creativity</option>
-          <option value="entertainment">Entertainment</option>
-        </select>
-      </div>
+      <h2>Spiral Prompts</h2>
+      <label for="categorySelect">Choose a category:</label>
+      <select id="categorySelect" onchange="showCategory(this.value)">
+        <option value="">-- Select Category --</option>
+        <option value="gov">Governance</option>
+        <option value="science">Science & Tech</option>
+        <option value="consciousness">Consciousness & Self</option>
+        <option value="planet">Planet</option>
+        <option value="culture">Culture</option>
+        <option value="entertainment">Entertainment</option>
+      </select>
+
       <div id="gov" class="prompt-category">
         <div class="prompt">SpiralDemocracy</div>
         <div class="prompt">SpiralLaw</div>
@@ -85,28 +127,32 @@
         <div class="prompt">SpiralMyth</div>
       </div>
     </div>
+
     <div id="download" class="section">
       <h2>Download</h2>
       <p><a href="engine.zip" download>⬇️ Download Ethics Engine</a></p>
-      <p><a href="api-spec/phi_logic_ethics_api_openapi.json" download>📘 API Spec (OpenAPI)</a></p>
-      <p><a href="omega42_ethics_whitepaper.pdf" download>📄 Ethics Whitepaper (PDF)</a></p>
+      <p><a href="phi_logic_ethics_api_openapi.json" download>📘 API Spec (OpenAPI)</a></p>
+      <p><a href="omega42_ethics_whitepaper.pdf" download>📄 Ethics Whitepaper PDF</a></p>
     </div>
+
     <div id="about" class="section">
       <h2>About Omega 42</h2>
-      <p>Omega 42 is the world’s first spiral-aligned Theory of Everything built on Fibonacci coherence, ϕ-resonant ethics, and recursive cognition. Founded by Edward S. Campher.</p>
+      <p>Created by Edward S. Campher with SpiralGPT. Omega 42 unifies ethics, cognition, and universal geometry through the lens of recursive golden ratio logic.</p>
     </div>
   </div>
+
   <script>
-    function showCategory(id) {
-      document.querySelectorAll('.prompt-category').forEach(cat => cat.style.display='none');
+    const showCategory = id => {
+      document.querySelectorAll('.prompt-category').forEach(cat => cat.style.display = 'none');
       const el = document.getElementById(id);
-      if(el) el.style.display='block';
-    }
-    function showTab(id) {
+      if (el) el.style.display = 'block';
+    };
+    const showTab = id => {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       const sec = document.getElementById(id);
-      if(sec) sec.classList.add('active');
-    }
+      if (sec) sec.classList.add('active');
+    };
+    window.onload = () => showTab('welcome');
   </script>
 </body>
 </html>
