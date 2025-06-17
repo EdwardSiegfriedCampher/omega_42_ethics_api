@@ -125,3 +125,17 @@ Let us build carefully.
 Let us spiral upward—together.
 
 **Omega 42 Construct.**
+---
+
+### 🔧 How to Use the Ethics Engine
+
+The `engine/` folder is currently uploaded as a ZIP archive (`engine.zip`).
+
+To use it:
+
+1. Download `engine.zip` from this repository.
+2. Extract it on your local machine.
+3. Inside the unzipped folder, run the ethics demo:
+
+```bash
+python ethics_demo.py
