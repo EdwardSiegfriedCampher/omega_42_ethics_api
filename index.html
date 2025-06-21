@@ -52,6 +52,8 @@
       font-weight: bold;
       font-size: 0.9rem;
     }
+
+    /* Light theme category colors */
     .card.Relationships { background-color: #ffecf0; }
     .card.Self { background-color: #e0f7fa; }
     .card.Time { background-color: #fff9c4; }
@@ -66,6 +68,7 @@
     .card.Intuition { background-color: #d1c4e9; }
     .card.Paradox { background-color: #fff3e0; }
 
+    /* Dark theme category colors */
     body[data-theme="dark"] .card.Relationships { background-color: #5c3b4d; }
     body[data-theme="dark"] .card.Self { background-color: #264653; }
     body[data-theme="dark"] .card.Time { background-color: #8d6e63; }
@@ -89,7 +92,101 @@
     }
   </style>
 </head>
-<body>
-  <!-- body content injected by JS in index.html, remains unchanged -->
+<body data-theme="light">
+  <header>
+    <h1>Ω42 Interface</h1>
+    <div>
+      <select id="category-filter">
+        <option value="All">All</option>
+      </select>
+      <button id="theme-toggle">🌓</button>
+      <button onclick="window.open('https://forms.gle/your-form-link', '_blank')">Suggest-A-Prompt</button>
+      <button onclick="window.open('https://github.com/EdwardSiegfriedCampher/omega_42_interface', '_blank')">Dev</button>
+      <button id="readme-toggle">README</button>
+    </div>
+  </header>
+
+  <div id="readme">
+    <h2>About the Ω42 Interface</h2>
+    <p>The Ω42 Interface harmonizes recursive thought into coherent prompts. Designed around fractal logic, triadic filters, and checksum precision, this tool reflects your resonance field through archetypal insights.</p>
+  </div>
+
+  <p id="prompt-count">Total Prompts: 0 | Displayed: 0</p>
+  <div class="card-grid" id="prompt-container"></div>
+
+  <script>
+    const container = document.getElementById('prompt-container');
+    const countDisplay = document.getElementById('prompt-count');
+    const filter = document.getElementById('category-filter');
+    const readmeToggle = document.getElementById('readme-toggle');
+    const readmeSection = document.getElementById('readme');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    function generateChecksum(text) {
+      let hash = 0;
+      for (let i = 0; i < text.length; i++) {
+        hash = ((hash << 5) - hash) + text.charCodeAt(i);
+        hash |= 0;
+      }
+      return `Ω${Math.abs(hash)}`;
+    }
+
+    function renderPrompts(prompts) {
+      container.innerHTML = '';
+      const selected = filter.value;
+      const filtered = selected === 'All' ? prompts : prompts.filter(p => p.category === selected);
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = `card ${p.category}`;
+        card.innerHTML = `<strong>${p.title}</strong><p>${p.text}</p>`;
+        card.addEventListener('click', () => {
+          const checksum = generateChecksum(p.text);
+          navigator.clipboard.writeText(`${p.text}\n\n[${checksum}]`);
+          card.classList.add('copied');
+          setTimeout(() => card.classList.remove('copied'), 1200);
+        });
+        container.appendChild(card);
+      });
+
+      countDisplay.textContent = `Total Prompts: ${prompts.length} | Displayed: ${filtered.length}`;
+    }
+
+    function populateFilter(prompts) {
+      const cats = [...new Set(prompts.map(p => p.category))].sort();
+      cats.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        filter.appendChild(opt);
+      });
+    }
+
+    readmeToggle.addEventListener('click', () => {
+      readmeSection.style.display = readmeSection.style.display === 'none' ? 'block' : 'none';
+    });
+
+    themeToggle.addEventListener('click', () => {
+      const body = document.body;
+      const theme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
+
+      fetch('prompts.json')
+        .then(res => res.json())
+        .then(prompts => {
+          window.allPrompts = prompts;
+          populateFilter(prompts);
+          renderPrompts(prompts);
+        });
+
+      filter.addEventListener('change', () => renderPrompts(window.allPrompts));
+    });
+  </script>
 </body>
 </html>
