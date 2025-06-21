@@ -41,6 +41,10 @@
       border-radius: 10px;
       background: #fff;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .card:hover {
+      background-color: #f0f8ff;
     }
     .card.copied::after {
       content: 'Copied!';
@@ -81,7 +85,7 @@
       <button onclick="toggleTheme()">🌓</button>
     </div>
     <div>
-      <button onclick="alert('Prompt submission form coming soon!')">Suggest</button>
+      <button onclick="alert('Prompt submission form coming soon!')">Suggest-A-Prompt</button>
       <button onclick="alert('Developer tools module is under construction.')">Dev</button>
       <button id="readme-toggle">README</button>
     </div>
@@ -135,7 +139,8 @@
         const checksum = generateChecksum(p.text);
         card.innerHTML = `<h3>${p.title}</h3><p>${p.text}</p>`;
         card.onclick = () => {
-          navigator.clipboard.writeText(`${p.text} [${checksum}]`).then(() => {
+          const copyContent = `${p.text} [${checksum}]`;
+          navigator.clipboard.writeText(copyContent).then(() => {
             card.classList.add('copied');
             setTimeout(() => card.classList.remove('copied'), 1500);
           });
@@ -164,7 +169,12 @@
     function initReadmeToggle() {
       document.getElementById('readme-toggle').addEventListener('click', () => {
         const readme = document.getElementById('readme');
-        readme.style.display = readme.style.display === 'none' ? 'block' : 'none';
+        if (readme.style.display === 'block') {
+          readme.style.display = 'none';
+        } else {
+          readme.style.display = 'block';
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
       });
     }
 
