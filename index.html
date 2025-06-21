@@ -52,8 +52,6 @@
       font-weight: bold;
       font-size: 0.9rem;
     }
-
-    /* Light theme category colors */
     .card.Relationships { background-color: #ffecf0; }
     .card.Self { background-color: #e0f7fa; }
     .card.Time { background-color: #fff9c4; }
@@ -68,7 +66,6 @@
     .card.Intuition { background-color: #d1c4e9; }
     .card.Paradox { background-color: #fff3e0; }
 
-    /* Dark theme category colors */
     body[data-theme="dark"] .card.Relationships { background-color: #5c3b4d; }
     body[data-theme="dark"] .card.Self { background-color: #264653; }
     body[data-theme="dark"] .card.Time { background-color: #8d6e63; }
@@ -92,35 +89,30 @@
     }
   </style>
 </head>
-<body data-theme="light">
-  <header>
-    <h1>Ω42 Interface</h1>
-    <div>
-      <select id="category-filter">
-        <option value="All">All</option>
-      </select>
-      <button id="theme-toggle">🌓</button>
-      <button onclick="window.open('https://forms.gle/your-form-link', '_blank')">Suggest-A-Prompt</button>
-      <button onclick="window.open('https://github.com/EdwardSiegfriedCampher/omega_42_interface', '_blank')">Dev</button>
-      <button id="readme-toggle">README</button>
-    </div>
-  </header>
-
-  <div id="readme">
-    <h2>About the Ω42 Interface</h2>
-    <p>The Ω42 Interface harmonizes recursive thought into coherent prompts. Designed around fractal logic, triadic filters, and checksum precision, this tool reflects your resonance field through archetypal insights.</p>
-  </div>
-
-  <p id="prompt-count">Total Prompts: 0 | Displayed: 0</p>
-  <div class="card-grid" id="prompt-container"></div>
-
+<body>
   <script>
-    const container = document.getElementById('prompt-container');
-    const countDisplay = document.getElementById('prompt-count');
-    const filter = document.getElementById('category-filter');
+    const container = document.getElementById('prompt-container') || (() => {
+      const el = document.createElement('div');
+      el.id = 'prompt-container';
+      el.className = 'card-grid';
+      document.body.appendChild(el);
+      return el;
+    })();
+
+    const countDisplay = (() => {
+      let el = document.getElementById('prompt-count');
+      if (!el) {
+        el = document.createElement('p');
+        el.id = 'prompt-count';
+        document.body.insertBefore(el, container);
+      }
+      return el;
+    })();
+
     const readmeToggle = document.getElementById('readme-toggle');
     const readmeSection = document.getElementById('readme');
     const themeToggle = document.getElementById('theme-toggle');
+    const filter = document.getElementById('category-filter');
 
     function generateChecksum(text) {
       let hash = 0;
@@ -133,9 +125,8 @@
 
     function renderPrompts(prompts) {
       container.innerHTML = '';
-      const selected = filter.value;
+      const selected = filter?.value || 'All';
       const filtered = selected === 'All' ? prompts : prompts.filter(p => p.category === selected);
-
       filtered.forEach(p => {
         const card = document.createElement('div');
         card.className = `card ${p.category}`;
@@ -144,15 +135,15 @@
           const checksum = generateChecksum(p.text);
           navigator.clipboard.writeText(`${p.text}\n\n[${checksum}]`);
           card.classList.add('copied');
-          setTimeout(() => card.classList.remove('copied'), 1200);
+          setTimeout(() => card.classList.remove('copied'), 1000);
         });
         container.appendChild(card);
       });
-
       countDisplay.textContent = `Total Prompts: ${prompts.length} | Displayed: ${filtered.length}`;
     }
 
     function populateFilter(prompts) {
+      if (!filter) return;
       const cats = [...new Set(prompts.map(p => p.category))].sort();
       cats.forEach(cat => {
         const opt = document.createElement('option');
@@ -162,30 +153,31 @@
       });
     }
 
-    readmeToggle.addEventListener('click', () => {
+    readmeToggle?.addEventListener('click', () => {
       readmeSection.style.display = readmeSection.style.display === 'none' ? 'block' : 'none';
     });
 
-    themeToggle.addEventListener('click', () => {
-      const body = document.body;
-      const theme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
+    themeToggle?.addEventListener('click', () => {
+      const current = document.body.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
     });
 
     window.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
-
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.setAttribute('data-theme', savedTheme);
       fetch('prompts.json')
         .then(res => res.json())
-        .then(prompts => {
-          window.allPrompts = prompts;
-          populateFilter(prompts);
-          renderPrompts(prompts);
+        .then(data => {
+          window.allPrompts = data;
+          populateFilter(data);
+          renderPrompts(data);
+          filter?.addEventListener('change', () => renderPrompts(window.allPrompts));
+        })
+        .catch(err => {
+          container.innerHTML = `<p style="color:red;">Error loading prompts.json: ${err.message}</p>`;
         });
-
-      filter.addEventListener('change', () => renderPrompts(window.allPrompts));
     });
   </script>
 </body>
