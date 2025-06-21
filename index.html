@@ -43,7 +43,7 @@
       transition: background-color 0.3s ease, color 0.3s ease;
     }
     .card:hover {
-      background-color: #f0f8ff;
+      filter: brightness(1.05);
     }
     .card.copied::after {
       content: 'Copied!';
@@ -158,13 +158,13 @@
       const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
       document.body.dataset.theme = newTheme;
       localStorage.setItem('theme', newTheme);
-      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#333' : '#fff');
+      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#222' : '#fff');
     }
 
     function setInitialTheme() {
       const saved = localStorage.getItem('theme') || 'light';
       document.body.dataset.theme = saved;
-      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#333' : '#fff');
+      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#222' : '#fff');
     }
 
     function initReadmeToggle() {
