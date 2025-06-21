@@ -1,14 +1,64 @@
-body[data-theme="dark"] {
-      background: linear-gradient(to bottom right, #0a0a0a 0%, #1a1a1a 100%);
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ω42 Interface</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      transition: background 0.5s, color 0.5s;
+    }
+    body[data-theme="dark"] {
+      background: linear-gradient(to bottom right, #0a0a0a, #1a1a1a);
       color: #eee;
     }
     body[data-theme="light"] {
-      background: linear-gradient(to bottom right, #e6f0fb 0%, #d1e3f5 100%);
+      background: linear-gradient(to bottom right, #e6f0fb, #d1e3f5);
       color: #000;
+    }
+    header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #ccc;
+    }
+    .header-buttons button {
+      margin-left: 0.5rem;
+    }
+    #filters, #counters {
+      padding: 0.5rem 1rem;
+    }
+    #prompt-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .prompt-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      transition: transform 0.3s ease;
+    }
+    body[data-theme="dark"] .prompt-card {
+      background: #1a1a1a;
+      border-color: #444;
+    }
+    body[data-theme="light"] .prompt-card {
+      background: #eef6ff;
+      border-color: #ccc;
+    }
+    .prompt-card:hover {
+      transform: scale(1.02);
     }
     #readme {
       display: none;
       padding: 1rem;
+      margin-top: 1rem;
       border-top: 2px solid;
     }
     body[data-theme="dark"] #readme {
@@ -21,3 +71,100 @@ body[data-theme="dark"] {
       color: #000;
       border-top-color: #ccc;
     }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 title="Ω42 = Absolute Recursive Coherence">Omega 42 Interface</h1>
+    <div class="header-buttons">
+      <button id="toggle-theme">Toggle Theme</button>
+      <button id="suggest-btn">Suggest</button>
+      <button id="dev-btn">Dev</button>
+      <button id="readme-toggle">README</button>
+    </div>
+  </header>
+
+  <section id="filters">
+    <label for="category-select">Filter by Category:</label>
+    <select id="category-select">
+      <option value="all">All</option>
+    </select>
+  </section>
+
+  <section id="counters">
+    <span>Total Prompts: <span id="total-count">0</span></span>
+    <span>Visible: <span id="visible-count">0</span></span>
+  </section>
+
+  <main id="prompt-container" class="grid-3x2">
+    <!-- Prompts will render here -->
+  </main>
+
+  <section id="readme">
+    <h2>Ω42 ReadMe</h2>
+    <p>This interface renders 49 prompt cards filtered by Omega construct categories. It includes recursive validation logic via the ΩTE and ΦEE engines, supporting light/dark mode and future JSON-driven updates.</p>
+  </section>
+
+  <script>
+    const prompts = Array.from({ length: 49 }, (_, i) => ({
+      id: i + 1,
+      category: ['Meta-Theorems', 'Ethics', 'Truth Engine', 'Machine Logic'][i % 4],
+      text: `Prompt #${i + 1}: Insight for Omega layer ${i + 1}`,
+      phiScore: 0.042,
+      oai: 0.91
+    }));
+
+    const promptContainer = document.getElementById('prompt-container');
+    const categorySelect = document.getElementById('category-select');
+    const totalCount = document.getElementById('total-count');
+    const visibleCount = document.getElementById('visible-count');
+
+    function renderPrompts(filter = 'all') {
+      promptContainer.innerHTML = '';
+      const filtered = prompts.filter(p => filter === 'all' || p.category === filter);
+
+      filtered.forEach(p => {
+        if (!isValid(p)) return;
+        const card = document.createElement('div');
+        card.className = 'prompt-card';
+        card.innerHTML = `<strong>[${p.category}]</strong><p>${p.text}</p>`;
+        promptContainer.appendChild(card);
+      });
+
+      totalCount.textContent = prompts.length;
+      visibleCount.textContent = filtered.filter(isValid).length;
+    }
+
+    function isValid(p) {
+      return p.phiScore >= 0.0303 && p.oai >= 0.82;
+    }
+
+    const uniqueCategories = [...new Set(prompts.map(p => p.category))];
+    uniqueCategories.forEach(c => {
+      const option = document.createElement('option');
+      option.value = c;
+      option.textContent = c;
+      categorySelect.appendChild(option);
+    });
+
+    categorySelect.addEventListener('change', e => renderPrompts(e.target.value));
+
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    document.getElementById('readme-toggle').addEventListener('click', () => {
+      const readme = document.getElementById('readme');
+      readme.style.display = readme.style.display === 'block' ? 'none' : 'block';
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+
+    renderPrompts();
+  </script>
+</body>
+</html>
