@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ω42 Interface</title>
-  <style>
-    body[data-theme="dark"] {
+body[data-theme="dark"] {
       background: linear-gradient(to bottom right, #0a0a0a 0%, #1a1a1a 100%);
       color: #eee;
     }
@@ -13,172 +6,18 @@
       background: linear-gradient(to bottom right, #e6f0fb 0%, #d1e3f5 100%);
       color: #000;
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      background: linear-gradient(to right, #5f4bb6, #42a5f5), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Logarithmic_spiral_rainbow.svg/1280px-Logarithmic_spiral_rainbow.svg.png');
-      background-blend-mode: overlay;
-      background-size: cover;
-      background-position: center;
-      color: white;
-      text-shadow: 0 0 5px black;
-    }
-    select, button {
-      margin: 0 0.5rem;
-    }
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .card {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease, filter 0.3s ease;
-    }
-    .card:hover {
-      filter: brightness(1.1);
-    }
-    .card.copied::after {
-      content: 'Copied!';
-      display: block;
-      color: green;
-      margin-top: 0.5rem;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-    .card.Relationships { background-color: #ffecf0; }
-    .card.Self { background-color: #e0f7fa; }
-    .card.Time { background-color: #fff9c4; }
-    .card.Consciousness { background-color: #ede7f6; }
-    .card.Philosophy { background-color: #e8f5e9; }
-    .card.Meta { background-color: #f3e5f5; }
-    .card.Ethics { background-color: #fce4ec; }
-    .card.Logic { background-color: #dcedc8; }
-    .card.Dreams { background-color: #f8bbd0; }
-    .card.Systems { background-color: #ffe0b2; }
-    .card.Memory { background-color: #c8e6c9; }
-    .card.Intuition { background-color: #d1c4e9; }
-    .card.Paradox { background-color: #fff3e0; }
-
-    body[data-theme="dark"] .card.Relationships { background-color: #5c3b4d; }
-    body[data-theme="dark"] .card.Self { background-color: #264653; }
-    body[data-theme="dark"] .card.Time { background-color: #8d6e63; }
-    body[data-theme="dark"] .card.Consciousness { background-color: #4527a0; }
-    body[data-theme="dark"] .card.Philosophy { background-color: #1b5e20; }
-    body[data-theme="dark"] .card.Meta { background-color: #4a148c; }
-    body[data-theme="dark"] .card.Ethics { background-color: #880e4f; }
-    body[data-theme="dark"] .card.Logic { background-color: #33691e; }
-    body[data-theme="dark"] .card.Dreams { background-color: #6a1b9a; }
-    body[data-theme="dark"] .card.Systems { background-color: #bf360c; }
-    body[data-theme="dark"] .card.Memory { background-color: #2e7d32; }
-    body[data-theme="dark"] .card.Intuition { background-color: #4527a0; }
-    body[data-theme="dark"] .card.Paradox { background-color: #ff6f00; }
-    body[data-theme="dark"] .card { color: #f0f0f0; }
-
     #readme {
       display: none;
       padding: 1rem;
+      border-top: 2px solid;
+    }
+    body[data-theme="dark"] #readme {
+      background: #1a1a1a;
+      color: #f0f0f0;
+      border-top-color: #444;
+    }
+    body[data-theme="light"] #readme {
       background: #eef6ff;
-      border-top: 2px solid #ccc;
+      color: #000;
+      border-top-color: #ccc;
     }
-  </style>
-</head>
-<body>
-  <script>
-    const container = document.getElementById('prompt-container') || (() => {
-      const el = document.createElement('div');
-      el.id = 'prompt-container';
-      el.className = 'card-grid';
-      document.body.appendChild(el);
-      return el;
-    })();
-
-    const countDisplay = (() => {
-      let el = document.getElementById('prompt-count');
-      if (!el) {
-        el = document.createElement('p');
-        el.id = 'prompt-count';
-        document.body.insertBefore(el, container);
-      }
-      return el;
-    })();
-
-    const readmeToggle = document.getElementById('readme-toggle');
-    const readmeSection = document.getElementById('readme');
-    const themeToggle = document.getElementById('theme-toggle');
-    const filter = document.getElementById('category-filter');
-
-    function generateChecksum(text) {
-      let hash = 0;
-      for (let i = 0; i < text.length; i++) {
-        hash = ((hash << 5) - hash) + text.charCodeAt(i);
-        hash |= 0;
-      }
-      return `Ω${Math.abs(hash)}`;
-    }
-
-    function renderPrompts(prompts) {
-      container.innerHTML = '';
-      const selected = filter?.value || 'All';
-      const filtered = selected === 'All' ? prompts : prompts.filter(p => p.category === selected);
-      filtered.forEach(p => {
-        const card = document.createElement('div');
-        card.className = `card ${p.category}`;
-        card.innerHTML = `<strong>${p.title}</strong><p>${p.text}</p>`;
-        card.addEventListener('click', () => {
-          const checksum = generateChecksum(p.text);
-          navigator.clipboard.writeText(`${p.text}\n\n[${checksum}]`);
-          card.classList.add('copied');
-          setTimeout(() => card.classList.remove('copied'), 1000);
-        });
-        container.appendChild(card);
-      });
-      countDisplay.textContent = `Total Prompts: ${prompts.length} | Displayed: ${filtered.length}`;
-    }
-
-    function populateFilter(prompts) {
-      if (!filter) return;
-      const cats = [...new Set(prompts.map(p => p.category))].sort();
-      cats.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat;
-        opt.textContent = cat;
-        filter.appendChild(opt);
-      });
-    }
-
-    readmeToggle?.addEventListener('click', () => {
-      readmeSection.style.display = readmeSection.style.display === 'none' ? 'block' : 'none';
-    });
-
-    themeToggle?.addEventListener('click', () => {
-      const current = document.body.getAttribute('data-theme') || 'light';
-      const next = current === 'light' ? 'dark' : 'light';
-      document.body.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.body.setAttribute('data-theme', savedTheme);
-      fetch('prompts.json')
-        .then(res => res.json())
-        .then(data => {
-          window.allPrompts = data;
-          populateFilter(data);
-          renderPrompts(data);
-          filter?.addEventListener('change', () => renderPrompts(window.allPrompts));
-        })
-        .catch(err => {
-          container.innerHTML = `<p style="color:red;">Error loading prompts.json: ${err.message}</p>`;
-        });
-    });
-  </script>
-</body>
-</html>
