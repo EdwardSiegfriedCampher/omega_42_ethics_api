@@ -44,6 +44,16 @@
         <option value="Meta">Meta</option>
         <option value="Ethics">Ethics</option>
         <option value="Consciousness">Consciousness</option>
+        <option value="Self">Self</option>
+        <option value="Time">Time</option>
+        <option value="Logic">Logic</option>
+        <option value="Dreams">Dreams</option>
+        <option value="Philosophy">Philosophy</option>
+        <option value="Systems">Systems</option>
+        <option value="Memory">Memory</option>
+        <option value="Relationships">Relationships</option>
+        <option value="Intuition">Intuition</option>
+        <option value="Paradox">Paradox</option>
       </select>
       <button onclick="toggleTheme()">🌓</button>
     </div>
@@ -63,9 +73,17 @@
     let allPrompts = [];
 
     async function loadPrompts() {
-      const res = await fetch(promptsUrl);
-      allPrompts = await res.json();
-      renderPrompts('all');
+      try {
+        const res = await fetch(promptsUrl);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        allPrompts = data;
+        renderPrompts('all');
+      } catch (err) {
+        console.error("❌ Failed to load prompts.json:", err);
+        const container = document.getElementById('prompt-container');
+        container.innerHTML = `<p style="color:red;">Failed to load prompts. See console for details.</p>`;
+      }
     }
 
     function renderPrompts(category) {
@@ -80,6 +98,7 @@
       });
       document.getElementById('total-count').textContent = allPrompts.length;
       document.getElementById('visible-count').textContent = filtered.length;
+      console.log(`Rendering ${filtered.length} of ${allPrompts.length} prompts`);
     }
 
     document.getElementById('filter').addEventListener('change', (e) => {
