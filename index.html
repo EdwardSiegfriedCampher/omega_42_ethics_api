@@ -18,7 +18,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem;
-      background: linear-gradient(to right, #2b1055, #7597de), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Logarithmic_spiral_rainbow.svg/1280px-Logarithmic_spiral_rainbow.svg.png');
+      background: linear-gradient(to right, #5f4bb6, #42a5f5), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Logarithmic_spiral_rainbow.svg/1280px-Logarithmic_spiral_rainbow.svg.png');
       background-blend-mode: overlay;
       background-size: cover;
       background-position: center;
@@ -38,7 +38,7 @@
       border: 1px solid #ccc;
       padding: 1rem;
       border-radius: 10px;
-      background: #fff;
+      background: var(--card-bg);
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
@@ -81,7 +81,7 @@
         <option value="Intuition">Intuition</option>
         <option value="Paradox">Paradox</option>
       </select>
-      <button onclick="toggleTheme()">🌓</button>
+      <button onclick="toggleTheme()">🌃</button>
     </div>
     <div>
       <button onclick="alert('Prompt submission form coming soon!')">Suggest-A-Prompt</button>
@@ -158,11 +158,13 @@
       const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
       document.body.dataset.theme = newTheme;
       localStorage.setItem('theme', newTheme);
+      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#222' : '#fff');
     }
 
     function setInitialTheme() {
       const saved = localStorage.getItem('theme') || 'light';
       document.body.dataset.theme = saved;
+      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#222' : '#fff');
     }
 
     function initReadmeToggle() {
