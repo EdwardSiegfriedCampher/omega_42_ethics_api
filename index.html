@@ -40,7 +40,7 @@
       border-radius: 10px;
       background: var(--card-bg);
       cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease, filter 0.3s ease;
     }
     .card:hover {
       filter: brightness(1.05);
@@ -81,7 +81,7 @@
         <option value="Intuition">Intuition</option>
         <option value="Paradox">Paradox</option>
       </select>
-      <button onclick="toggleTheme()">☿</button>
+      <button onclick="toggleTheme()">☯</button>
     </div>
     <div>
       <button onclick="alert('Prompt submission form coming soon!')">Suggest-A-Prompt</button>
@@ -158,13 +158,13 @@
       const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
       document.body.dataset.theme = newTheme;
       localStorage.setItem('theme', newTheme);
-      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#222' : '#fff');
+      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#222' : '#fdfdfd');
     }
 
     function setInitialTheme() {
       const saved = localStorage.getItem('theme') || 'light';
       document.body.dataset.theme = saved;
-      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#222' : '#fff');
+      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#222' : '#fdfdfd');
     }
 
     function initReadmeToggle() {
