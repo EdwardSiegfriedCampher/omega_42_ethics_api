@@ -10,7 +10,7 @@
       color: #eee;
     }
     body[data-theme="light"] {
-      background: linear-gradient(to bottom right, #f5f8fb 0%, #e2ecf9 100%);
+      background: linear-gradient(to bottom right, #e6f0fb 0%, #d1e3f5 100%);
       color: #000;
     }
     header {
@@ -42,7 +42,7 @@
       transition: background-color 0.3s ease, color 0.3s ease, filter 0.3s ease;
     }
     .card:hover {
-      filter: brightness(1.05);
+      filter: brightness(1.1);
     }
     .card.copied::after {
       content: 'Copied!';
@@ -65,7 +65,6 @@
     .card.Memory { background-color: #c8e6c9; }
     .card.Intuition { background-color: #d1c4e9; }
     .card.Paradox { background-color: #fff3e0; }
-    .card[category="default"] { background-color: var(--card-bg); }
 
     body[data-theme="dark"] .card.Relationships { background-color: #5c3b4d; }
     body[data-theme="dark"] .card.Self { background-color: #264653; }
@@ -91,6 +90,6 @@
   </style>
 </head>
 <body>
-  <!-- body remains unchanged -->
+  <!-- body content injected by JS in index.html, remains unchanged -->
 </body>
 </html>
