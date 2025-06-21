@@ -23,13 +23,19 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       border-bottom: 2px solid #ccc;
     }
-    .header-buttons button {
-      margin-left: 0.5rem;
+    .header-buttons {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
     }
     #filters, #counters {
       padding: 0.5rem 1rem;
+    }
+    #filters {
+      margin-top: 0.5rem;
     }
     #prompt-container {
       display: grid;
@@ -38,23 +44,18 @@
       padding: 1rem;
     }
     .prompt-card {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #ccc;
       border-radius: 8px;
       padding: 1rem;
       transition: transform 0.3s ease;
-    }
-    body[data-theme="dark"] .prompt-card {
-      background: #1a1a1a;
-      border-color: #444;
-    }
-    body[data-theme="light"] .prompt-card {
-      background: #eef6ff;
-      border-color: #ccc;
+      color: #fff;
     }
     .prompt-card:hover {
       transform: scale(1.02);
     }
+    .Meta-Theorems { background: #b8860b; }
+    .Ethics { background: #228b22; }
+    .Truth\ Engine { background: #1e90ff; }
+    .Machine\ Logic { background: #8b008b; }
     #readme {
       display: none;
       padding: 1rem;
@@ -77,6 +78,10 @@
   <header>
     <h1 title="Ω42 = Absolute Recursive Coherence">Omega 42 Interface</h1>
     <div class="header-buttons">
+      <label for="category-select">Category:</label>
+      <select id="category-select">
+        <option value="all">All</option>
+      </select>
       <button id="toggle-theme">Toggle Theme</button>
       <button id="suggest-btn">Suggest</button>
       <button id="dev-btn">Dev</button>
@@ -84,21 +89,12 @@
     </div>
   </header>
 
-  <section id="filters">
-    <label for="category-select">Filter by Category:</label>
-    <select id="category-select">
-      <option value="all">All</option>
-    </select>
-  </section>
-
   <section id="counters">
     <span>Total Prompts: <span id="total-count">0</span></span>
     <span>Visible: <span id="visible-count">0</span></span>
   </section>
 
-  <main id="prompt-container" class="grid-3x2">
-    <!-- Prompts will render here -->
-  </main>
+  <main id="prompt-container" class="grid-3x2"></main>
 
   <section id="readme">
     <h2>Ω42 ReadMe</h2>
@@ -126,7 +122,7 @@
       filtered.forEach(p => {
         if (!isValid(p)) return;
         const card = document.createElement('div');
-        card.className = 'prompt-card';
+        card.className = `prompt-card ${p.category.replace(/ /g, '-')}`;
         card.innerHTML = `<strong>[${p.category}]</strong><p>${p.text}</p>`;
         promptContainer.appendChild(card);
       });
