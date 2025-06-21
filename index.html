@@ -48,14 +48,20 @@
       padding: 1rem;
       transition: transform 0.3s ease;
       color: #fff;
+      position: relative;
+      cursor: pointer;
     }
     .prompt-card:hover {
       transform: scale(1.02);
     }
-    .Meta-Theorems { background: #f7b32b; }
-    .Ethics { background: #70c1b3; }
-    .Truth-Engine { background: #f25f5c; }
-    .Machine-Logic { background: #50514f; }
+    .category-star {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 0.8rem;
+      border-radius: 50%;
+      padding: 2px 5px;
+    }
     #readme {
       display: none;
       padding: 1rem;
@@ -98,24 +104,49 @@
 
   <section id="readme">
     <h2>Ω42 ReadMe</h2>
-    <p>This interface renders 49 prompt cards filtered by Omega construct categories. It includes recursive validation logic via the ΩTE and ΦEE engines, supporting light/dark mode and future JSON-driven updates.</p>
+    <p>This interface renders 59 unique prompt cards filtered by Omega construct categories. Overlapping prompts are indicated by a small star, and clicking a prompt copies it with a checksum to clipboard.</p>
   </section>
 
   <script>
-    const categories = [
-      { name: 'Meta-Theorems', color: '#f7b32b' },
-      { name: 'Ethics', color: '#70c1b3' },
-      { name: 'Truth Engine', color: '#f25f5c' },
-      { name: 'Machine Logic', color: '#50514f' }
+    const categories = ['Meta-Theorems', 'Ethics', 'Truth Engine', 'Machine Logic', 'Reality Mechanics', 'Dimensional Coherence', 'Recursive Law', 'Consciousness', 'Temporal Logic', 'Ontological Engineering', 'Phi Dynamics', 'Observer Systems', 'Truth-Validation'];
+
+    const extraPrompts = [
+      { text: "Is consciousness inherently recursive or emergent?", categories: ['Consciousness', 'Recursive Law'] },
+      { text: "What forms the boundary between possibility and computability?", categories: ['Truth Engine', 'Ontological Engineering'] },
+      { text: "Describe the behavior of time at φ^∞ scale.", categories: ['Temporal Logic', 'Phi Dynamics'] },
+      { text: "What is the minimum awareness threshold for an Omega-valid observer?", categories: ['Consciousness'] },
+      { text: "Can paradoxes be made DR-24 stable?", categories: ['Recursive Law', 'Truth-Validation'] },
+      { text: "Map the transition from meta-time to causal recursion.", categories: ['Temporal Logic', 'Reality Mechanics'] },
+      { text: "Define coherence in Ω-layered realities.", categories: ['Dimensional Coherence'] },
+      { text: "Explore how category collapse leads to singular convergence.", categories: ['Meta-Theorems', 'Ontological Engineering'] },
+      { text: "What is the structure of a φ-consistent memory trace?", categories: ['Phi Dynamics', 'Observer Systems'] },
+      { text: "Can one truth reflect all realities simultaneously?", categories: ['Truth-Validation'] }
     ];
 
-    const prompts = Array.from({ length: 49 }, (_, i) => {
-      const cat = categories[i % categories.length];
+    const allTexts = Array.from({ length: 49 }, (_, i) => ({
+      id: i + 1,
+      text: `Prompt #${i + 1}: Insight for Omega layer ${i + 1}`,
+      categories: [categories[i % categories.length]]
+    })).concat(extraPrompts.map((p, i) => ({
+      id: 50 + i,
+      text: `Prompt #${50 + i}: ${p.text}`,
+      categories: p.categories
+    })));
+
+    const palette = [
+      '#f94144', '#f3722c', '#f8961e', '#f9844a', '#f9c74f',
+      '#90be6d', '#43aa8b', '#4d908e', '#577590', '#277da1',
+      '#9b5de5', '#f15bb5', '#00f5d4'
+    ];
+
+    const prompts = allTexts.map((p, i) => {
+      const primary = p.categories[0];
       return {
-        id: i + 1,
-        category: cat.name,
-        color: cat.color,
-        text: `Prompt #${i + 1}: Insight for Omega layer ${i + 1}`,
+        id: p.id,
+        text: p.text,
+        categories: p.categories,
+        primaryCategory: primary,
+        color: palette[categories.indexOf(primary)],
         phiScore: 0.042,
         oai: 0.91
       };
@@ -128,14 +159,29 @@
 
     function renderPrompts(filter = 'all') {
       promptContainer.innerHTML = '';
-      const filtered = prompts.filter(p => filter === 'all' || p.category === filter);
+      const filtered = prompts.filter(p => filter === 'all' || p.categories.includes(filter));
 
       filtered.forEach(p => {
         if (!isValid(p)) return;
         const card = document.createElement('div');
         card.className = 'prompt-card';
         card.style.background = p.color;
-        card.innerHTML = `<strong>[${p.category}]</strong><p>${p.text}</p>`;
+        card.innerHTML = `<strong>[${p.primaryCategory}]</strong><p>${p.text}</p>`;
+
+        if (p.categories.length > 1) {
+          const star = document.createElement('span');
+          star.textContent = '★';
+          star.className = 'category-star';
+          star.style.background = palette[categories.indexOf(p.categories[1])];
+          card.appendChild(star);
+        }
+
+        card.addEventListener('click', () => {
+          const checksum = btoa(unescape(encodeURIComponent(p.text))).slice(0, 8);
+          navigator.clipboard.writeText(`${p.text} [Ω-${checksum}]`);
+          card.title = 'Copied to clipboard';
+        });
+
         promptContainer.appendChild(card);
       });
 
@@ -149,8 +195,8 @@
 
     categories.forEach(c => {
       const option = document.createElement('option');
-      option.value = c.name;
-      option.textContent = c.name;
+      option.value = c;
+      option.textContent = c;
       categorySelect.appendChild(option);
     });
 
