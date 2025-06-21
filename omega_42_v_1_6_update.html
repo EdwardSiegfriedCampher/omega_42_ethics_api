@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ω42 Interface</title>
+  <style>
+    body[data-theme="dark"] {
+      background-color: #111;
+      color: #eee;
+    }
+    body[data-theme="light"] {
+      background-color: #fff;
+      color: #000;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .card {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 10px;
+      background: var(--card-bg);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    select, button {
+      margin: 0 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <strong title="Ω42: The Recursive Unity of Consciousness and Reality">Ω42 Interface</strong>
+      <select id="filter">
+        <option value="all">All</option>
+        <option value="Meta">Meta</option>
+        <option value="Ethics">Ethics</option>
+        <option value="Consciousness">Consciousness</option>
+      </select>
+      <button onclick="toggleTheme()">🌓</button>
+    </div>
+    <div>
+      <button>Suggest</button>
+      <button>Dev</button>
+      <button>README</button>
+    </div>
+  </header>
+  <div>
+    <p>Total Prompts: <span id="total-count">0</span> | Displayed: <span id="visible-count">0</span></p>
+  </div>
+  <div class="card-grid" id="prompt-container"></div>
+
+  <script>
+    const promptsUrl = 'prompts.json';
+    let allPrompts = [];
+
+    async function loadPrompts() {
+      const res = await fetch(promptsUrl);
+      allPrompts = await res.json();
+      renderPrompts('all');
+    }
+
+    function renderPrompts(category) {
+      const container = document.getElementById('prompt-container');
+      container.innerHTML = '';
+      const filtered = category === 'all' ? allPrompts : allPrompts.filter(p => p.category === category);
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3>${p.title}</h3><p>${p.text}</p>`;
+        container.appendChild(card);
+      });
+      document.getElementById('total-count').textContent = allPrompts.length;
+      document.getElementById('visible-count').textContent = filtered.length;
+    }
+
+    document.getElementById('filter').addEventListener('change', (e) => {
+      renderPrompts(e.target.value);
+    });
+
+    function toggleTheme() {
+      const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.body.dataset.theme = newTheme;
+      localStorage.setItem('theme', newTheme);
+    }
+
+    function setInitialTheme() {
+      const saved = localStorage.getItem('theme') || 'light';
+      document.body.dataset.theme = saved;
+    }
+
+    setInitialTheme();
+    loadPrompts();
+  </script>
+</body>
+</html>
