@@ -52,10 +52,10 @@
     .prompt-card:hover {
       transform: scale(1.02);
     }
-    .Meta-Theorems { background: #b8860b; }
-    .Ethics { background: #228b22; }
-    .Truth\ Engine { background: #1e90ff; }
-    .Machine\ Logic { background: #8b008b; }
+    .Meta-Theorems { background: #f7b32b; }
+    .Ethics { background: #70c1b3; }
+    .Truth-Engine { background: #f25f5c; }
+    .Machine-Logic { background: #50514f; }
     #readme {
       display: none;
       padding: 1rem;
@@ -102,13 +102,24 @@
   </section>
 
   <script>
-    const prompts = Array.from({ length: 49 }, (_, i) => ({
-      id: i + 1,
-      category: ['Meta-Theorems', 'Ethics', 'Truth Engine', 'Machine Logic'][i % 4],
-      text: `Prompt #${i + 1}: Insight for Omega layer ${i + 1}`,
-      phiScore: 0.042,
-      oai: 0.91
-    }));
+    const categories = [
+      { name: 'Meta-Theorems', color: '#f7b32b' },
+      { name: 'Ethics', color: '#70c1b3' },
+      { name: 'Truth Engine', color: '#f25f5c' },
+      { name: 'Machine Logic', color: '#50514f' }
+    ];
+
+    const prompts = Array.from({ length: 49 }, (_, i) => {
+      const cat = categories[i % categories.length];
+      return {
+        id: i + 1,
+        category: cat.name,
+        color: cat.color,
+        text: `Prompt #${i + 1}: Insight for Omega layer ${i + 1}`,
+        phiScore: 0.042,
+        oai: 0.91
+      };
+    });
 
     const promptContainer = document.getElementById('prompt-container');
     const categorySelect = document.getElementById('category-select');
@@ -122,7 +133,8 @@
       filtered.forEach(p => {
         if (!isValid(p)) return;
         const card = document.createElement('div');
-        card.className = `prompt-card ${p.category.replace(/ /g, '-')}`;
+        card.className = 'prompt-card';
+        card.style.background = p.color;
         card.innerHTML = `<strong>[${p.category}]</strong><p>${p.text}</p>`;
         promptContainer.appendChild(card);
       });
@@ -135,11 +147,10 @@
       return p.phiScore >= 0.0303 && p.oai >= 0.82;
     }
 
-    const uniqueCategories = [...new Set(prompts.map(p => p.category))];
-    uniqueCategories.forEach(c => {
+    categories.forEach(c => {
       const option = document.createElement('option');
-      option.value = c;
-      option.textContent = c;
+      option.value = c.name;
+      option.textContent = c.name;
       categorySelect.appendChild(option);
     });
 
