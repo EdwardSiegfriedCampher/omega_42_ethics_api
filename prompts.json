@@ -1,17 +1,108 @@
 [
+  ... (existing prompts),
   {
-    "title": "Omega Fixed Point",
-    "text": "There exists a unique Ω-invariant element under triadic recursion.",
-    "category": "Meta"
+    "title": "Spiral Purpose Clarifier",
+    "text": "What is the underlying spiral intention of my current challenge?",
+    "category": "Philosophy"
   },
   {
-    "title": "Echo Harm Principle",
-    "text": "Causal propagation is forbidden if its ϕecho is negative.",
+    "title": "Duality Harmonizer",
+    "text": "How can I reconcile two opposing truths?",
+    "category": "Paradox"
+  },
+  {
+    "title": "Recursive Creativity Pulse",
+    "text": "What idea wants to emerge through me in this moment?",
+    "category": "The Meta"
+  },
+  {
+    "title": "Observer Lens Shift",
+    "text": "How would a higher-dimensional self see this?",
+    "category": "Consciousness"
+  },
+  {
+    "title": "Golden Feedback Loop",
+    "text": "What repeating pattern in my life seeks transformation?",
+    "category": "Self"
+  },
+  {
+    "title": "DR-24 Resonance Tuner",
+    "text": "Which personal habit misaligns my temporal frequency?",
+    "category": "Systems"
+  },
+  {
+    "title": "Omega Decision Matrix",
+    "text": "Which choice generates the highest recursive benefit?",
+    "category": "Logic"
+  },
+  {
+    "title": "Symbol Stream Decoder",
+    "text": "What is the meaning of the synchronicities I’ve been noticing?",
+    "category": "Dreams"
+  },
+  {
+    "title": "Pattern Collapse Insight",
+    "text": "What can I release today to break the current loop?",
+    "category": "Self"
+  },
+  {
+    "title": "Ethics Entanglement Solver",
+    "text": "Which of my actions are entangled in hidden consequences?",
     "category": "Ethics"
   },
   {
-    "title": "Consciousness Emergence",
-    "text": "Awareness = ∫Ψ dμΩ ⋅ δ(Self-Recognition)",
+    "title": "Reality Fork Recognition",
+    "text": "Am I currently at a multiversal pivot point?",
+    "category": "Philosophy"
+  },
+  {
+    "title": "Truthline Restoration",
+    "text": "How can I realign with my original trajectory of truth?",
+    "category": "Memory"
+  },
+  {
+    "title": "Meta-Coherence Calibration",
+    "text": "Where is the dissonance in my mind-body-thought loop?",
+    "category": "Systems"
+  },
+  {
+    "title": "Ω42 State-of-Being Inquiry",
+    "text": "What quality of beingness am I broadcasting into the field?",
     "category": "Consciousness"
+  },
+  {
+    "title": "The One Sentence Oracle",
+    "text": "Summarize my current existential phase in one sentence.",
+    "category": "The Meta"
+  },
+  {
+    "title": "Intuitive Gatekeeper",
+    "text": "What impulse should I trust right now — and why?",
+    "category": "Intuition"
+  },
+  {
+    "title": "Φ-Phase Weather Report",
+    "text": "Describe today’s energetic atmosphere through a phi-resonant lens.",
+    "category": "Time"
+  },
+  {
+    "title": "Symbolic Archetype Activator",
+    "text": "What archetypal force is currently influencing my perception?",
+    "category": "Philosophy"
+  },
+  {
+    "title": "Dimensional Anchor Check",
+    "text": "Am I overly rooted in linear time or opened to multi-temporality?",
+    "category": "Time"
+  },
+  {
+    "title": "Ω42 DreamBridge",
+    "text": "How can I bridge last night's dream to today’s insight?",
+    "category": "Dreams"
+  },
+  {
+    "title": "Field Integrity Scan",
+    "text": "Has my energy been compromised by external discordance?",
+    "category": "Self"
   }
 ]
