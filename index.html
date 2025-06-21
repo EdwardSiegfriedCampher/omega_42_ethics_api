@@ -18,7 +18,9 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Golden_spiral_in_a_squares_grid.svg/800px-Golden_spiral_in_a_squares_grid.svg.png');
+      background-color: #242c42;
+      background-image: linear-gradient(to right, #1e1e2f, #403f5e), url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Golden_spiral_in_a_squares_grid.svg/800px-Golden_spiral_in_a_squares_grid.svg.png');
+      background-blend-mode: overlay;
       background-size: cover;
       background-position: center;
       color: white;
@@ -37,7 +39,16 @@
       border: 1px solid #ccc;
       padding: 1rem;
       border-radius: 10px;
-      background: var(--card-bg);
+      background: #fff;
+      cursor: pointer;
+    }
+    .card.copied::after {
+      content: 'Copied!';
+      display: block;
+      color: green;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -99,6 +110,15 @@
       }
     }
 
+    function generateChecksum(text) {
+      let hash = 0;
+      for (let i = 0; i < text.length; i++) {
+        hash = (hash << 5) - hash + text.charCodeAt(i);
+        hash |= 0;
+      }
+      return 'Ω' + Math.abs(hash).toString(36).toUpperCase();
+    }
+
     function renderPrompts(category) {
       const container = document.getElementById('prompt-container');
       container.innerHTML = '';
@@ -106,12 +126,18 @@
       filtered.forEach(p => {
         const card = document.createElement('div');
         card.className = 'card';
+        const checksum = generateChecksum(p.text);
         card.innerHTML = `<h3>${p.title}</h3><p>${p.text}</p>`;
+        card.onclick = () => {
+          navigator.clipboard.writeText(`${p.text} [${checksum}]`).then(() => {
+            card.classList.add('copied');
+            setTimeout(() => card.classList.remove('copied'), 1500);
+          });
+        };
         container.appendChild(card);
       });
       document.getElementById('total-count').textContent = allPrompts.length;
       document.getElementById('visible-count').textContent = filtered.length;
-      console.log(`Rendering ${filtered.length} of ${allPrompts.length} prompts`);
     }
 
     document.getElementById('filter').addEventListener('change', (e) => {
