@@ -6,11 +6,11 @@
   <title>Ω42 Interface</title>
   <style>
     body[data-theme="dark"] {
-      background: linear-gradient(to bottom right, #111 0%, #222 100%);
+      background: linear-gradient(to bottom right, #0a0a0a 0%, #1a1a1a 100%);
       color: #eee;
     }
     body[data-theme="light"] {
-      background: linear-gradient(to bottom right, #fff 0%, #e6f2ff 100%);
+      background: linear-gradient(to bottom right, #f5f8fb 0%, #e2ecf9 100%);
       color: #000;
     }
     header {
@@ -158,13 +158,13 @@
       const newTheme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
       document.body.dataset.theme = newTheme;
       localStorage.setItem('theme', newTheme);
-      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#222' : '#fdfdfd');
+      document.documentElement.style.setProperty('--card-bg', newTheme === 'dark' ? '#222' : '#f6f9fc');
     }
 
     function setInitialTheme() {
       const saved = localStorage.getItem('theme') || 'light';
       document.body.dataset.theme = saved;
-      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#222' : '#fdfdfd');
+      document.documentElement.style.setProperty('--card-bg', saved === 'dark' ? '#222' : '#f6f9fc');
     }
 
     function initReadmeToggle() {
