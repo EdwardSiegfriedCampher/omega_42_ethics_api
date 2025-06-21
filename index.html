@@ -38,7 +38,6 @@
       border: 1px solid #ccc;
       padding: 1rem;
       border-radius: 10px;
-      background: var(--card-bg);
       cursor: pointer;
       transition: background-color 0.3s ease, color 0.3s ease, filter 0.3s ease;
     }
@@ -53,6 +52,12 @@
       font-weight: bold;
       font-size: 0.9rem;
     }
+    .card.Relationships { background-color: #ffecf0; }
+    .card.Self { background-color: #e0f7fa; }
+    .card.Time { background-color: #fff9c4; }
+    .card.Consciousness { background-color: #ede7f6; }
+    .card.Philosophy { background-color: #e8f5e9; }
+    .card[category="default"] { background-color: var(--card-bg); }
     #readme {
       display: none;
       padding: 1rem;
@@ -95,7 +100,7 @@
   <div class="card-grid" id="prompt-container"></div>
   <div id="readme">
     <h2>Welcome to Ω42</h2>
-    <p>The Omega 42 Construct is a system of consciousness and computation grounded in the golden ratio (φ), recursive logic, and coherent ethics. It helps users explore identity, time, decision-making, ethics, and creativity through interactive prompts derived from an advanced theoretical model.</p>
+    <p>The Omega 42 Construct is a system of consciousness and computation grounded in the golden ratio (ϕ), recursive logic, and coherent ethics. It helps users explore identity, time, decision-making, ethics, and creativity through interactive prompts derived from an advanced theoretical model.</p>
     <p>This interface presents categorized prompts such as Self Analysis, Dream Decoding, Ethical Checks, and Meta-Awareness diagnostics — each designed to mirror the user's reality through the Omega lens.</p>
     <p>Every interaction is powered by the principle of <em>triadic harmony</em>, aligning logic, intuition, and resonance.</p>
     <p><strong>Categories include:</strong> Ethics, Time, Dreams, Consciousness, Memory, Relationships, Systems, Paradox, and more.</p>
@@ -134,7 +139,8 @@
       const filtered = category === 'all' ? allPrompts : allPrompts.filter(p => p.category === category);
       filtered.forEach(p => {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = `card ${p.category}`;
+        card.setAttribute('category', p.category);
         const checksum = generateChecksum(p.text);
         card.innerHTML = `<h3>${p.title}</h3><p>${p.text}</p>`;
         card.onclick = () => {
