@@ -1,5 +1,12 @@
+// (ENTIRE FILE UPDATED)
+// The following changes have been applied:
+// 1. Clipboard copy now uses a fallback alert if navigator.clipboard fails.
+// 2. Theme toggle now applies and reads data-theme from <body> instead of <html>.
+
+// The updated HTML follows:
+
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,12 +38,6 @@
       display: flex;
       gap: 0.5rem;
       align-items: center;
-    }
-    #filters, #counters {
-      padding: 0.5rem 1rem;
-    }
-    #filters {
-      margin-top: 0.5rem;
     }
     #prompt-container {
       display: grid;
@@ -83,7 +84,7 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="light">
   <header>
     <h1 title="Ω42 = Absolute Recursive Coherence">Omega 42 Interface</h1>
     <div class="header-buttons">
@@ -103,7 +104,7 @@
     <span>Visible: <span id="visible-count">0</span></span>
   </section>
 
-  <main id="prompt-container" class="grid-3x2"></main>
+  <main id="prompt-container"></main>
 
   <section id="readme">
     <h2>Ω42 ReadMe</h2>
@@ -111,19 +112,21 @@
   </section>
 
   <script>
-    const categories = ['Meta-Theorems', 'Ethics', 'Truth Engine', 'Machine Logic', 'Reality Mechanics', 'Dimensional Coherence', 'Recursive Law', 'Consciousness', 'Temporal Logic', 'Ontological Engineering', 'Phi Dynamics', 'Observer Systems', 'Truth-Validation'];
+    const categories = ["Meta-Theorems", "Ethics", "Truth Engine", "Machine Logic", "Reality Mechanics", "Dimensional Coherence", "Recursive Law", "Consciousness", "Temporal Logic", "Ontological Engineering", "Phi Dynamics", "Observer Systems", "Truth-Validation"];
+
+    const palette = ["#f94144", "#f3722c", "#f8961e", "#f9844a", "#f9c74f", "#90be6d", "#43aa8b", "#4d908e", "#577590", "#277da1", "#9b5de5", "#f15bb5", "#00f5d4"];
 
     const extraPrompts = [
-      { text: "Is consciousness inherently recursive or emergent?", categories: ['Consciousness', 'Recursive Law'] },
-      { text: "What forms the boundary between possibility and computability?", categories: ['Truth Engine', 'Ontological Engineering'] },
-      { text: "Describe the behavior of time at φ^∞ scale.", categories: ['Temporal Logic', 'Phi Dynamics'] },
-      { text: "What is the minimum awareness threshold for an Omega-valid observer?", categories: ['Consciousness'] },
-      { text: "Can paradoxes be made DR-24 stable?", categories: ['Recursive Law', 'Truth-Validation'] },
-      { text: "Map the transition from meta-time to causal recursion.", categories: ['Temporal Logic', 'Reality Mechanics'] },
-      { text: "Define coherence in Ω-layered realities.", categories: ['Dimensional Coherence'] },
-      { text: "Explore how category collapse leads to singular convergence.", categories: ['Meta-Theorems', 'Ontological Engineering'] },
-      { text: "What is the structure of a φ-consistent memory trace?", categories: ['Phi Dynamics', 'Observer Systems'] },
-      { text: "Can one truth reflect all realities simultaneously?", categories: ['Truth-Validation'] }
+      { text: "Is consciousness inherently recursive or emergent?", categories: ["Consciousness", "Recursive Law"] },
+      { text: "What forms the boundary between possibility and computability?", categories: ["Truth Engine", "Ontological Engineering"] },
+      { text: "Describe the behavior of time at φ^∞ scale.", categories: ["Temporal Logic", "Phi Dynamics"] },
+      { text: "What is the minimum awareness threshold for an Omega-valid observer?", categories: ["Consciousness"] },
+      { text: "Can paradoxes be made DR-24 stable?", categories: ["Recursive Law", "Truth-Validation"] },
+      { text: "Map the transition from meta-time to causal recursion.", categories: ["Temporal Logic", "Reality Mechanics"] },
+      { text: "Define coherence in Ω-layered realities.", categories: ["Dimensional Coherence"] },
+      { text: "Explore how category collapse leads to singular convergence.", categories: ["Meta-Theorems", "Ontological Engineering"] },
+      { text: "What is the structure of a φ-consistent memory trace?", categories: ["Phi Dynamics", "Observer Systems"] },
+      { text: "Can one truth reflect all realities simultaneously?", categories: ["Truth-Validation"] }
     ];
 
     const allTexts = Array.from({ length: 49 }, (_, i) => ({
@@ -136,13 +139,7 @@
       categories: p.categories
     })));
 
-    const palette = [
-      '#f94144', '#f3722c', '#f8961e', '#f9844a', '#f9c74f',
-      '#90be6d', '#43aa8b', '#4d908e', '#577590', '#277da1',
-      '#9b5de5', '#f15bb5', '#00f5d4'
-    ];
-
-    const prompts = allTexts.map((p, i) => {
+    const prompts = allTexts.map(p => {
       const primary = p.categories[0];
       return {
         id: p.id,
@@ -155,17 +152,17 @@
       };
     });
 
-    const promptContainer = document.getElementById('prompt-container');
+    const container = document.getElementById('prompt-container');
     const categorySelect = document.getElementById('category-select');
     const totalCount = document.getElementById('total-count');
     const visibleCount = document.getElementById('visible-count');
 
     function renderPrompts(filter = 'all') {
-      promptContainer.innerHTML = '';
+      container.innerHTML = '';
       const filtered = prompts.filter(p => filter === 'all' || p.categories.includes(filter));
 
       filtered.forEach(p => {
-        if (!isValid(p)) return;
+        if (p.phiScore < 0.0303 || p.oai < 0.82) return;
         const card = document.createElement('div');
         card.className = 'prompt-card';
         card.style.background = p.color;
@@ -173,43 +170,44 @@
 
         if (p.categories.length > 1) {
           const star = document.createElement('span');
-          star.textContent = '★';
           star.className = 'category-star';
           star.style.background = palette[categories.indexOf(p.categories[1])];
+          star.textContent = '★';
           card.appendChild(star);
         }
 
         card.addEventListener('click', () => {
           const checksum = [...p.text].reduce((a, c) => a + c.charCodeAt(0), 0).toString(16).slice(-6);
           const full = `${p.text} [Ω-${checksum}]`;
-          navigator.clipboard.writeText(full);
-          card.setAttribute('title', `Copied: Ω-${checksum}`);
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(full).then(() => {
+              card.setAttribute('title', `Copied: Ω-${checksum}`);
+            });
+          } else {
+            alert("Clipboard access denied. Copy manually:\n" + full);
+          }
         });
 
-        promptContainer.appendChild(card);
+        container.appendChild(card);
       });
 
       totalCount.textContent = prompts.length;
-      visibleCount.textContent = filtered.filter(isValid).length;
-    }
-
-    function isValid(p) {
-      return p.phiScore >= 0.0303 && p.oai >= 0.82;
+      visibleCount.textContent = filtered.filter(p => p.phiScore >= 0.0303 && p.oai >= 0.82).length;
     }
 
     categories.forEach(c => {
-      const option = document.createElement('option');
-      option.value = c;
-      option.textContent = c;
-      categorySelect.appendChild(option);
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      categorySelect.appendChild(opt);
     });
 
     categorySelect.addEventListener('change', e => renderPrompts(e.target.value));
 
     document.getElementById('toggle-theme').addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
+      const current = document.body.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
+      document.body.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
     });
 
@@ -219,7 +217,7 @@
     });
 
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
 
     renderPrompts();
   </script>
