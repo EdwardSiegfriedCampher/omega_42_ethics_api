@@ -19,7 +19,7 @@
       align-items: center;
       padding: 1rem;
       background-color: #242c42;
-      background-image: linear-gradient(to right, #1e1e2f, #403f5e), url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Golden_spiral_in_a_squares_grid.svg/800px-Golden_spiral_in_a_squares_grid.svg.png');
+      background-image: linear-gradient(to right, #1e1e2f, #403f5e), url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Golden_spiral_in_a_squares_grid.svg');
       background-blend-mode: overlay;
       background-size: cover;
       background-position: center;
@@ -50,6 +50,12 @@
       font-weight: bold;
       font-size: 0.9rem;
     }
+    #readme {
+      display: none;
+      padding: 1rem;
+      background: #f9f9f9;
+      border-top: 2px solid #ccc;
+    }
   </style>
 </head>
 <body>
@@ -77,14 +83,14 @@
     <div>
       <button onclick="alert('Prompt submission form coming soon!')">Suggest</button>
       <button onclick="alert('Developer tools module is under construction.')">Dev</button>
-      <button onclick="showReadme()">README</button>
+      <button id="readme-toggle">README</button>
     </div>
   </header>
   <div>
     <p>Total Prompts: <span id="total-count">0</span> | Displayed: <span id="visible-count">0</span></p>
   </div>
   <div class="card-grid" id="prompt-container"></div>
-  <div id="readme" style="display:none; padding:1rem; background:#f9f9f9; border-top:2px solid #ccc;">
+  <div id="readme">
     <h2>Welcome to Ω42</h2>
     <p>The Omega 42 Construct is a system of consciousness and computation grounded in the golden ratio (φ), recursive logic, and coherent ethics. It helps users explore identity, time, decision-making, ethics, and creativity through interactive prompts derived from an advanced theoretical model.</p>
     <p>This interface presents categorized prompts such as Self Analysis, Dream Decoding, Ethical Checks, and Meta-Awareness diagnostics — each designed to mirror the user's reality through the Omega lens.</p>
@@ -155,13 +161,16 @@
       document.body.dataset.theme = saved;
     }
 
-    function showReadme() {
-      const readme = document.getElementById('readme');
-      readme.style.display = readme.style.display === 'none' ? 'block' : 'none';
+    function initReadmeToggle() {
+      document.getElementById('readme-toggle').addEventListener('click', () => {
+        const readme = document.getElementById('readme');
+        readme.style.display = readme.style.display === 'none' ? 'block' : 'none';
+      });
     }
 
     setInitialTheme();
     loadPrompts();
+    initReadmeToggle();
   </script>
 </body>
 </html>
