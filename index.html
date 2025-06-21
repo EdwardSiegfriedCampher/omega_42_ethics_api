@@ -24,7 +24,8 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      border-bottom: 2px solid #ccc;
+      background-color: #292b36;
+      color: white;
     }
     .header-buttons {
       display: flex;
@@ -50,9 +51,11 @@
       color: #fff;
       position: relative;
       cursor: pointer;
+      user-select: none;
     }
     .prompt-card:hover {
       transform: scale(1.02);
+      opacity: 0.95;
     }
     .category-star {
       position: absolute;
@@ -177,9 +180,10 @@
         }
 
         card.addEventListener('click', () => {
-          const checksum = btoa(unescape(encodeURIComponent(p.text))).slice(0, 8);
-          navigator.clipboard.writeText(`${p.text} [Ω-${checksum}]`);
-          card.title = 'Copied to clipboard';
+          const checksum = [...p.text].reduce((a, c) => a + c.charCodeAt(0), 0).toString(16).slice(-6);
+          const full = `${p.text} [Ω-${checksum}]`;
+          navigator.clipboard.writeText(full);
+          card.setAttribute('title', `Copied: Ω-${checksum}`);
         });
 
         promptContainer.appendChild(card);
